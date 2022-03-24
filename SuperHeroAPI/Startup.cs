@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 using SuperHeroAPI.Data;
+using SuperHeroAPI.Models;
 
 namespace SuperHeroAPI
 {
@@ -22,14 +23,16 @@ namespace SuperHeroAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<SuperHeroDbContext>(options 
-                => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SuperHeroAPI", Version = "v1" });
             });
+
+            services.AddDbContext<SuperHeroDbContext>(options
+                => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
+
+            services.AddScoped<ISuperHeroRepository, SuperHeroRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
