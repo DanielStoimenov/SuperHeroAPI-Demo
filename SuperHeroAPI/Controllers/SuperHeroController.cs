@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using SuperHeroAPI.Data;
 using SuperHeroAPI.Models;
+using SuperHeroAPI.Services.Contracts;
 
 namespace SuperHeroAPI.Controllers
 {
@@ -12,29 +13,29 @@ namespace SuperHeroAPI.Controllers
     [ApiController]
     public class SuperHeroController : ControllerBase
     {
-        private readonly ISuperHeroRepository _heroRepository;
+        private readonly ISuperHeroService _heroService;
 
-        public SuperHeroController(ISuperHeroRepository heroRepository)
+        public SuperHeroController(ISuperHeroService heroService)
         {
-            _heroRepository = heroRepository;
+            _heroService = heroService;
         }
 
         [HttpGet]
         public async Task<IEnumerable<SuperHero>> Get()
         {
-            return await _heroRepository.Get();
+            return await _heroService.Get();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<SuperHero>> Get(int id)
         {
-            return await _heroRepository.Get(id);
+            return await _heroService.GetById(id);
         }
 
         [HttpPost]
         public async Task<ActionResult<SuperHero>> AddHero([FromBody] SuperHero hero)
         {
-            var newSuperHero = await _heroRepository.Create(hero);
+            var newSuperHero = await _heroService.AddHero(hero);
             return CreatedAtAction(nameof(Get), new { Id = newSuperHero.Id }, newSuperHero);
         }
 
@@ -45,19 +46,19 @@ namespace SuperHeroAPI.Controllers
             {
                 return BadRequest("Hero not found");
             }
-            await _heroRepository.Update(hero);
+            await _heroService.UpdateHero(id, hero);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteHero(int id)
         {
-            var heroToRemove = await _heroRepository.Get(id);
+            var heroToRemove = await _heroService.GetById(id);
             if (heroToRemove == null)
             {
                 return BadRequest("Hero not found");
             }
-            await _heroRepository.Delete(heroToRemove.Id);
+            await _heroService.DeleteHero(id);
             return NoContent();
         }
     }

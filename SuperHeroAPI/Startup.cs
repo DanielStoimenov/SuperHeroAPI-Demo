@@ -8,6 +8,8 @@ using Microsoft.OpenApi.Models;
 
 using SuperHeroAPI.Data;
 using SuperHeroAPI.Models;
+using SuperHeroAPI.Services;
+using SuperHeroAPI.Services.Contracts;
 
 namespace SuperHeroAPI
 {
@@ -33,6 +35,7 @@ namespace SuperHeroAPI
                 => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
 
             services.AddScoped<ISuperHeroRepository, SuperHeroRepository>();
+            services.AddScoped<ISuperHeroService, SuperHeroService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
