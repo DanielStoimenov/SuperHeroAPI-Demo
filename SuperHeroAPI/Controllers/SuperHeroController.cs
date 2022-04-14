@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
-using SuperHeroAPI.Data;
-using SuperHeroAPI.Models;
 using SuperHeroAPI.Services.Contracts;
 
 namespace SuperHeroAPI.Controllers
