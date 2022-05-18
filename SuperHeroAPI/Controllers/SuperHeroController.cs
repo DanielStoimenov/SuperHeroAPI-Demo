@@ -25,7 +25,14 @@ namespace SuperHeroAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<SuperHero>> Get(int id)
         {
-            return await _heroService.GetById(id);
+            var heroe = await _heroService.GetById(id);
+
+            if (heroe == null)
+            {
+                return NotFound();
+            }
+
+            return heroe;
         }
 
         [HttpPost]
